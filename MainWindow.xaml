@@ -1,0 +1,15 @@
+﻿<Window x:Class="Gauge.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Gauge"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="800" Width="1600" Background="#FF363636" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <local:UserControlGauge Width="800" HorizontalAlignment="Left" DataContext="{Binding Path=GaugeViewModel}" /> 
+        <local:UserControlGear Width="800" HorizontalAlignment="Center" VerticalAlignment="Center" DataContext="{Binding Path=GearViewModel}" /> 
+        <local:UserControlRPMGauge Width="800" HorizontalAlignment="Right" DataContext="{Binding Path=GaugeRPMViewModel}" />
+        <local:UserControlInfo Width="800" Margin="0, 0, 0, 10" VerticalAlignment="Bottom" HorizontalAlignment="Center" DataContext="{Binding Path=UDPInfo}" />
+    </Grid>
+</Window>
