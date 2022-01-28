@@ -1,0 +1,31 @@
+﻿<Window x:Class="GUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI"
+        mc:Ignorable="d"
+        Title="Telemetry App" Height="420" Width="400" ResizeMode="NoResize" Closing="Window_Closing">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
+    <Grid>
+        <Button Name="ConnectButton" Content="Connect" HorizontalAlignment="Left" Margin="175,210,0,0" VerticalAlignment="Top" Width="120" Click="ConnectButton_Click"/>
+        <TextBox IsEnabled="{Binding IsDisconnected}" Name="IPTextBox" HorizontalAlignment="Left" Height="23" Margin="175,103,0,0" TextWrapping="Wrap" Text="{Binding IpAddress}" VerticalAlignment="Top" Width="120"/>
+        <ComboBox IsEnabled="{Binding IsDisconnected}" Name="GameTypeComboBox" HorizontalAlignment="Left" Margin="175,68,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="GameTypeComboBox_SelectionChanged"/>
+        <TextBlock HorizontalAlignment="Left" Margin="108,68,0,0" TextWrapping="Wrap" Text="Game:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="46,106,0,0" TextWrapping="Wrap" Text="GameUDP IP/Port:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="42,139,0,0" TextWrapping="Wrap" Text="Arduino COM Port:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="82,175,0,0" TextWrapping="Wrap" Text="Bandwidth:" VerticalAlignment="Top"/>
+        <TextBox IsEnabled="{Binding IsDisconnected}" Name="BandwidthTextBox" HorizontalAlignment="Left" Height="23" Margin="175,174,0,0" TextWrapping="Wrap" Text="{Binding Bandwidth}" VerticalAlignment="Top" Width="120"/>
+        <ComboBox IsEnabled="{Binding IsDisconnected}" Name="PortComboBox" HorizontalAlignment="Left" Margin="175,139,0,0" VerticalAlignment="Top" Width="120"/>
+        <TextBox IsEnabled="{Binding IsDisconnected}" x:Name="IPPortTextBox" HorizontalAlignment="Left" Height="23" Margin="308,103,0,0" TextWrapping="Wrap" Text="{Binding IpPort}" VerticalAlignment="Top" Width="52" RenderTransformOrigin="0.34,0.754"/>
+        <TextBlock HorizontalAlignment="Left" Margin="300,106,0,0" TextWrapping="Wrap" Text=":" VerticalAlignment="Top"/>
+        <TextBlock Visibility="{Binding DisplayRPM, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Left" Margin="175,257,0,0" TextWrapping="Wrap" Text="RPM:" VerticalAlignment="Top"/>
+        <TextBlock Visibility="{Binding DisplayRPM, Converter={StaticResource BooleanToVisibilityConverter}}" Name="RPMTextBlock" HorizontalAlignment="Left" Margin="227,257,0,0" TextWrapping="Wrap" Text="{Binding Value}" VerticalAlignment="Top" Width="68"/>
+        <CheckBox IsChecked="{Binding DisplayRPM}" Name="DisplayValuesCheckbox" Content="Display values" HorizontalAlignment="Left" Margin="47,257,0,0" VerticalAlignment="Top"/>
+        <CheckBox IsEnabled="{Binding IsDisconnected}" IsChecked="{Binding SendToArduino}" Name="SendArduinoCheckbox" Content="Send to Arduino" HorizontalAlignment="Left" Margin="47,286,0,0" VerticalAlignment="Top"/>
+        <Button Content="Clear RPM" HorizontalAlignment="Left" Margin="175,283,0,0" VerticalAlignment="Top" Width="120"  Click="Button_Click" />
+
+    </Grid>
+</Window>
