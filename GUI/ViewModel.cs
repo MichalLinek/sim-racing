@@ -80,6 +80,7 @@ namespace GUI
                 _isDisconnected = !_isConnected;
                 NotifyPropertyChanged("IsConnected");
                 NotifyPropertyChanged("IsDisconnected");
+                NotifyPropertyChanged("IsArduinoAvailable");
             }
         }
 
@@ -95,6 +96,15 @@ namespace GUI
             {
                 _isDisconnected = value;
                 NotifyPropertyChanged("IsDisconnected");
+                NotifyPropertyChanged("IsArduinoAvailable");
+            }
+        }
+        
+        public bool IsArduinoAvailable
+        {
+            get
+            {
+                return IsDisconnected && !string.IsNullOrEmpty(ComPort);
             }
         }
 
@@ -155,6 +165,7 @@ namespace GUI
             {
                 _comPort = value;
                 NotifyPropertyChanged("ComPort");
+                NotifyPropertyChanged("IsArduinoAvailable");
             }
         }
     }

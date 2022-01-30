@@ -24,7 +24,7 @@
         <TextBlock Visibility="{Binding DisplayRPM, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Left" Margin="175,257,0,0" TextWrapping="Wrap" Text="RPM:" VerticalAlignment="Top"/>
         <TextBlock Visibility="{Binding DisplayRPM, Converter={StaticResource BooleanToVisibilityConverter}}" Name="RPMTextBlock" HorizontalAlignment="Left" Margin="227,257,0,0" TextWrapping="Wrap" Text="{Binding Value}" VerticalAlignment="Top" Width="68"/>
         <CheckBox IsChecked="{Binding DisplayRPM}" Name="DisplayValuesCheckbox" Content="Display values" HorizontalAlignment="Left" Margin="47,257,0,0" VerticalAlignment="Top"/>
-        <CheckBox IsEnabled="{Binding IsDisconnected}" IsChecked="{Binding SendToArduino}" Name="SendArduinoCheckbox" Content="Send to Arduino" HorizontalAlignment="Left" Margin="47,286,0,0" VerticalAlignment="Top"/>
+        <CheckBox IsEnabled="{Binding IsArduinoAvailable}" IsChecked="{Binding SendToArduino}" Name="SendArduinoCheckbox" Content="Send to Arduino" HorizontalAlignment="Left" Margin="47,286,0,0" VerticalAlignment="Top"/>
         <Button Content="Clear RPM" HorizontalAlignment="Left" Margin="175,283,0,0" VerticalAlignment="Top" Width="120"  Click="Button_Click" />
 
     </Grid>
