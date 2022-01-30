@@ -38,16 +38,16 @@ namespace GUI.Connectors.ProjectCarsConnector
                 FileLogger.LogInfo($"Reading packets from Project Cars 2");
                 while (true)
                 {
-                    PCConnection.readPackets();
-                    if (CarUpdate != null)
-                    {
-                        var updateArgs = new BaseUpdateEventArgs()
+                        PCConnection.readPackets();
+                        if (CarUpdate != null)
                         {
-                            carInfo = new AcUdpCommunication.CarInfo() { engineRPM = PCConnection.Rpm }
-                        };
+                            var updateArgs = new BaseUpdateEventArgs()
+                            {
+                                carInfo = new AcUdpCommunication.CarInfo() { engineRPM = PCConnection.Rpm }
+                            };
 
-                        CarUpdate(this, updateArgs);
-                    }
+                            CarUpdate(this, updateArgs);
+                        }
                 }
             }
             catch (Exception e)
@@ -61,11 +61,6 @@ namespace GUI.Connectors.ProjectCarsConnector
 
         private void RunUDPProcessing()
         {
-            //var backgroundWorker1 = new BackgroundWorker();
-            //backgroundWorker1.DoWork += BackgroundWorker1_DoWork;
-            //backgroundWorker1.WorkerSupportsCancellation = true; //Allow for the process to be cancelled
-
-
             thread = new Thread(ReadProjectCarsPacket);
             thread.Start();
         }

@@ -20,7 +20,7 @@ namespace GUI.Connectors.AssettoCorsaConnector
                 ACconnection.CarUpdate += UpdatedEventDelegate;
                 ACconnection.Connect();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 FileLogger.LogCritical($"Error while connecting to Assetto Corsa Connector, details:\n{ex.Message}");
             }
@@ -30,11 +30,21 @@ namespace GUI.Connectors.AssettoCorsaConnector
         {
             if (ACconnection != null)
             {
-                FileLogger.LogInfo($"Ending sending data from Assetto Corsa Connector");
-                ACconnection.CarUpdate -= UpdatedEventDelegate;
-                ACconnection.Disconnect();
-                ACconnection.Dispose();
-                FileLogger.LogInfo($"Ended sending data from Assetto Corsa Connector");
+                try
+                {
+                    FileLogger.LogInfo($"Ending sending data from Assetto Corsa Connector");
+                    ACconnection.CarUpdate -= UpdatedEventDelegate;
+                    ACconnection.Dispose();
+                    FileLogger.LogInfo($"Ended sending data from Assetto Corsa Connector");
+                }
+                catch(Exception ex)
+                {
+                    FileLogger.LogInfo($"Error on disconnect from Assetto Corsa Connector, details:\n{ex.Message}");
+                }
+                finally
+                {
+                    FileLogger.LogInfo($"Ended sending data from Assetto Corsa Connector");
+                }
             }
         }
 

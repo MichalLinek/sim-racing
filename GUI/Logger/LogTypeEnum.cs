@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace GUI.Logger
+﻿namespace GUI.Logger
 {
     enum LogTypeEnum
     {

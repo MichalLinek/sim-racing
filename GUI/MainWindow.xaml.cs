@@ -31,7 +31,7 @@ namespace GUI
                 InitializeComponent();
                 ViewModel = new ViewModel();
 
-                this.DataContext = ViewModel;
+                DataContext = ViewModel;
 
                 GameTypeComboBox.ItemsSource = new List<string>() { "Assetto Corsa", "Project Cars 2" };
                 GameTypeComboBox.SelectedIndex = 0;
