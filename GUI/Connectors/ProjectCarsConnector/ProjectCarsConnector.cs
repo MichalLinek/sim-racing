@@ -16,13 +16,9 @@ namespace GUI.Connectors.ProjectCarsConnector
 
         private UdpClient listener;
         private IPEndPoint groupEP;
-        private Thread thread;
-
-        private volatile bool stopThread;
-
+        private Thread thread;        
         public void Connect(string ipAddress, string port)
         {
-            stopThread = false;
             FileLogger.LogInfo($"Opening connection to ProjectCars Connector on IP: {ipAddress} and Port: {port}");
             listener = new UdpClient(Convert.ToInt32(port));
             groupEP = new IPEndPoint(IPAddress.Parse(ipAddress), Convert.ToInt32(port));
@@ -37,8 +33,7 @@ namespace GUI.Connectors.ProjectCarsConnector
 
         public void Disconnect()
         {
-            stopThread = true;
-            thread.Join();
+            CancelPC2();
         }
 
         private void ReadProjectCarsPacket()
@@ -46,7 +41,7 @@ namespace GUI.Connectors.ProjectCarsConnector
             try
             {
                 FileLogger.LogInfo($"Reading packets from Project Cars 2");
-                while (!stopThread)
+                while (true)
                 {
                     PCConnection.ReadPackets();
                     if (CarUpdate != null)
@@ -59,8 +54,6 @@ namespace GUI.Connectors.ProjectCarsConnector
                         CarUpdate(this, updateArgs);
                     }
                 }
-
-                FileLogger.LogInfo($"Stopping receive from Project Cars 2");
             }
             catch (Exception e)
             {
@@ -87,7 +80,7 @@ namespace GUI.Connectors.ProjectCarsConnector
             if (thread != null)
             {
                 FileLogger.LogInfo($"Closing connection for Project Cars 2");
-                //thread.Abort();
+                thread.Abort();
                 PCConnection.Dispose();
             }
         }
