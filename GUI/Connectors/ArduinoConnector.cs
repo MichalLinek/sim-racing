@@ -7,7 +7,7 @@ namespace GUI.Connectors
     public class ArduinoConnector
     {
         public SerialPort port;
-        private static string DELIMITER = "#";
+        private readonly string DELIMITER = "#";
 
         public void Connect(string comPort, string bandwidth)
         {

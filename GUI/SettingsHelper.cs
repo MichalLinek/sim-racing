@@ -15,11 +15,11 @@ namespace GUI
             {
                 if (!File.Exists(FILE_NAME))
                 {
-                    FileLogger.LogWarning($"Config file {FILE_NAME} not found...");
+                    FileLogger.LogInfo($"Config file {FILE_NAME} not found...");
                     return;
                 }
 
-                FileLogger.LogWarning($"Reading Config from {FILE_NAME} file");
+                FileLogger.LogInfo($"Reading Config from {FILE_NAME} file");
                 var serializer = new JsonSerializer();
                 using (var s = File.Open(FILE_NAME, FileMode.Open))
                 using (var sr = new StreamReader(s))
@@ -39,11 +39,11 @@ namespace GUI
                     }
                 }
 
-                FileLogger.LogWarning($"Successfully loaded config values");
+                FileLogger.LogInfo($"Successfully loaded config values");
             }
             catch (Exception ex)
             {
-                FileLogger.LogWarning($"Problem with {FILE_NAME} occured\n{ex.Message}");
+                FileLogger.LogError($"Problem with {FILE_NAME} occured\n{ex.Message}");
             }
         }
     }

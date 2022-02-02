@@ -24,10 +24,9 @@ namespace ProjectCarsConsoleApp
             {
                 while (true)
                 {
-                    connection.readPackets();
+                    connection.ReadPackets();
                     Console.WriteLine(connection.Rpm);
                 }
-
             }
 
             // port.Write("DISCONNECTED#");

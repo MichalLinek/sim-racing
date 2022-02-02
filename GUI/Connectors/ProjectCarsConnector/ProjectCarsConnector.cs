@@ -11,14 +11,18 @@ namespace GUI.Connectors.ProjectCarsConnector
 {
     public class ProjectCarsConnector : IConnector
     {
-        private UdpClient listener;
-        private IPEndPoint groupEP;
-        private Thread thread;
         public PCConnection PCConnection;
         public event EventHandler<BaseUpdateEventArgs> CarUpdate;
 
+        private UdpClient listener;
+        private IPEndPoint groupEP;
+        private Thread thread;
+
+        private volatile bool stopThread;
+
         public void Connect(string ipAddress, string port)
         {
+            stopThread = false;
             FileLogger.LogInfo($"Opening connection to ProjectCars Connector on IP: {ipAddress} and Port: {port}");
             listener = new UdpClient(Convert.ToInt32(port));
             groupEP = new IPEndPoint(IPAddress.Parse(ipAddress), Convert.ToInt32(port));
@@ -26,9 +30,15 @@ namespace GUI.Connectors.ProjectCarsConnector
             RunUDPProcessing();
         }
 
+        private void PCConnection_CarUpdate(object sender, BaseUpdateEventArgs e)
+        {
+            CarUpdate(this, e);
+        }
+
         public void Disconnect()
         {
-            CancelPC2();
+            stopThread = true;
+            thread.Join();
         }
 
         private void ReadProjectCarsPacket()
@@ -36,23 +46,25 @@ namespace GUI.Connectors.ProjectCarsConnector
             try
             {
                 FileLogger.LogInfo($"Reading packets from Project Cars 2");
-                while (true)
+                while (!stopThread)
                 {
-                        PCConnection.readPackets();
-                        if (CarUpdate != null)
+                    PCConnection.ReadPackets();
+                    if (CarUpdate != null)
+                    {
+                        var updateArgs = new BaseUpdateEventArgs()
                         {
-                            var updateArgs = new BaseUpdateEventArgs()
-                            {
-                                carInfo = new AcUdpCommunication.CarInfo() { engineRPM = PCConnection.Rpm }
-                            };
+                            carInfo = new AcUdpCommunication.CarInfo() { engineRPM = PCConnection.Rpm }
+                        };
 
-                            CarUpdate(this, updateArgs);
-                        }
+                        CarUpdate(this, updateArgs);
+                    }
                 }
+
+                FileLogger.LogInfo($"Stopping receive from Project Cars 2");
             }
             catch (Exception e)
             {
-                FileLogger.LogInfo($"Ending reading packets from Project Cars 2, details:\n{ e.Message}");
+                FileLogger.LogInfo($"Ending reading packets from Project Cars 2, details:\n{ e.Message }");
             }
             finally {
                 CancelPC2();
@@ -72,10 +84,10 @@ namespace GUI.Connectors.ProjectCarsConnector
 
         private void CancelPC2()
         {
-            if (thread != null && thread.IsAlive)
+            if (thread != null)
             {
                 FileLogger.LogInfo($"Closing connection for Project Cars 2");
-                thread.Abort();
+                //thread.Abort();
                 PCConnection.Dispose();
             }
         }

@@ -14,29 +14,35 @@ namespace GUI
             listener = listen;
             _groupEP = group;
         }
-
-        public void readPackets()
+        
+        public void ReadPackets()
         {
-            byte[] UDPpacket = listener.Receive(ref _groupEP);
-            Stream stream = new MemoryStream(UDPpacket);
-            var binaryReader = new BinaryReader(stream);
 
-            ReadBaseUDP(stream, binaryReader);
-            if (PacketType == 0)
+            byte[] UDPpacket = listener.Receive(ref _groupEP);
+            
+            using (var stream = new MemoryStream(UDPpacket))
             {
-                ReadTelemetryData(stream, binaryReader);
+                using (var binaryReader = new BinaryReader(stream))
+                {
+                    ReadBaseUDP(stream, binaryReader);
+                    if (PacketType == 0)
+                    {
+                        ReadTelemetryData(stream, binaryReader);
+                    }
+                }
             }
         }
 
+
         public void ReadBaseUDP(Stream stream, BinaryReader binaryReader)
         {
-            stream.Position = 0;
-            PacketNumber = binaryReader.ReadUInt32();
-            CategoryPacketNumber = binaryReader.ReadUInt32();
-            PartialPacketIndex = binaryReader.ReadByte();
-            PartialPacketNumber = binaryReader.ReadByte();
+            stream.Position = 10;
+            //PacketNumber = binaryReader.ReadUInt32();
+            //CategoryPacketNumber = binaryReader.ReadUInt32();
+            //PartialPacketIndex = binaryReader.ReadByte();
+            //PartialPacketNumber = binaryReader.ReadByte();
             PacketType = binaryReader.ReadByte();
-            PacketVersion = binaryReader.ReadByte();
+            //PacketVersion = binaryReader.ReadByte();
         }
 
         public void ReadTelemetryData(Stream stream, BinaryReader binaryReader)
@@ -45,14 +51,9 @@ namespace GUI
             Rpm = binaryReader.ReadUInt16();
         }
 
-        private void Close_UDP_Connection()
-        {
-            listener.Close();
-        }
-
         public void Dispose()
         {
-            this.Close_UDP_Connection();
+            listener.Close();
         }
 
         public UdpClient listener { get; set; }
